@@ -1,0 +1,6 @@
+devel_space: /home/arno/Desktop/active_3d_planning_fiesta/devel
+install: false
+install_space: /home/arno/Desktop/active_3d_planning_fiesta/install
+profile: default
+source_space: /home/arno/Desktop/active_3d_planning_fiesta/src
+workspace: /home/arno/Desktop/active_3d_planning_fiesta

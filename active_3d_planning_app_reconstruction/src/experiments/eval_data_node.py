@@ -5,7 +5,7 @@ import rospy
 from sensor_msgs.msg import PointCloud2
 from std_msgs.msg import String
 from std_srvs.srv import SetBool
-from voxblox_msgs.srv import FilePath
+# from voxblox_msgs.srv import FilePath 
 # Python
 import sys
 import time

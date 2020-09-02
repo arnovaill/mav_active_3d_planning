@@ -65,7 +65,7 @@ system_constraints:
   # yaw_rate_max: 1.6
   # yaw_accel_max: 1.6
   # collision_radius: 0.1
-  v_max: 0.2
+  v_max: 1.0
   a_max: 1.0
   yaw_rate_max: 0.8
   yaw_accel_max: 0.8
@@ -79,7 +79,7 @@ trajectory_generator:
 
   # Generator Params
   n_segments: 5
-  distance: 0.5 # originally 1.5 TRIAL ARNO OYEA
+  distance: 1.5
   yaw_angle: 1.2
   ascent_angle: 0.523
   sampling_rate: 20
@@ -109,7 +109,7 @@ trajectory_evaluator:
     type: "IterativeRayCaster"
     sampling_time: 0.0
     ray_length: 5.0
-    focal_length: 518.8579 #518.8579 #320 with field of view of 90, 518.8579 WITH SSC with field of view of 50.967800
+    focal_length: 320 #518.8579 #320 with field of view of 90, 518.8579 WITH SSC with field of view of 50.967800
     resolution_x: 640
     resolution_y: 480
     downsampling_factor: 3.0
@@ -120,12 +120,11 @@ trajectory_evaluator:
 
   # How to compute the values
   value_computer:
-    # type: "AccumulateValue"
-    # following_value_computer:
-    #   type: "LinearValue"
-    #   cost_weight: 1.0
-    #   gain_weight: 0.1
-    type: "GlobalNormalizedGain"
+    type: "AccumulateValue"
+    following_value_computer:
+      type: "LinearValue"
+      cost_weight: 1.0
+      gain_weight: 0.1
 
   # Execution policy for available segments
   next_selector:

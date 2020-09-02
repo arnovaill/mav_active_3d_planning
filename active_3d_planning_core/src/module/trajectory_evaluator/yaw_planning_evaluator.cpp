@@ -66,7 +66,6 @@ namespace active_3d_planning {
                 current_value = info->orientations.back().value;
             }
             double best_value = current_value;
-
             // Sample all directions
             for (int i = 1; i < p_n_directions_; ++i) {
                 info->orientations.push_back(traj_in->shallowCopy());

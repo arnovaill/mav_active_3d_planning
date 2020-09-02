@@ -2,7 +2,7 @@
 replan_pos_threshold: 0.25
 replan_yaw_threshold: 0.15
 
-max_new_segments: 0
+max_new_segments: 80
 min_new_segments: 0
 max_new_tries: 0
 min_new_tries: 0
@@ -17,59 +17,15 @@ highlight_executed_trajectory: true
 
 # Specify a map representation
 map:
-  type: "FiestaMap"
-  resolution: 0.08
-  update_esdf_every_n_sec: 0.2
-  reserved_size: 1000000
-  # lx: -5.0
-  # ly: -5.0 ESDF DOESNT WORK AS GOOD WITH A SMALLER MAP SIZE WTF
-  # lz: -1.5
-  # rx: 20
-  # ry: 20
-  # rz: 5
-  lx: -10.0
-  ly: -22.0
-  lz: -1.5
-  rx: 40
-  ry: 40
-  rz: 15
-  min_ray_length: 0.0 # originally 0.5
-  max_ray_length: 5.0
-  ray_cast_num_thread: 0
-  p_hit: 0.7
-  p_miss: 0.35
-  p_min: 0.12
-  p_max: 0.97 
-  p_occ: 0.80 
-  global_map: true
-  global_update: true
-  global_vis: true
-  radius_x: 3.0
-  radius_y: 3.0 
-  radius_z: 1.5
-  use_depth_filter: true
-  depth_filter_tolerance: 0.1
-  depth_filter_max_dist: 10.0
-  depth_filter_min_dist: 0.1
-  depth_filter_margin: 0
-  visualize_every_n_updates: 10
-  slice_vis_max_dist: 2.0 
-  slice_vis_level: 1.6 
-  vis_lower_bound: 0 
-  vis_upper_bound: 10
+  type: "VoxbloxMap"
 
 # System constraints
 system_constraints:
-  # v_max: 1.0
-  # a_max: 1.0
-  # yaw_rate_max: 1.6
-  # yaw_accel_max: 1.6
-  # collision_radius: 0.1
-  v_max: 0.2
+  v_max: 1.0
   a_max: 1.0
-  yaw_rate_max: 0.8
-  yaw_accel_max: 0.8
-  collision_radius: 0.35
+  yaw_rate_max: 1.6
+  yaw_accel_max: 1.6
+  collision_radius: 0.05 # originally 0.7
 
 # Specifying a trajectory generator
 trajectory_generator:
@@ -79,7 +35,7 @@ trajectory_generator:
 
   # Generator Params
   n_segments: 5
-  distance: 0.5 # originally 1.5 TRIAL ARNO OYEA
+  distance: 1.5
   yaw_angle: 1.2
   ascent_angle: 0.523
   sampling_rate: 20
@@ -109,7 +65,7 @@ trajectory_evaluator:
     type: "IterativeRayCaster"
     sampling_time: 0.0
     ray_length: 5.0
-    focal_length: 518.8579 #518.8579 #320 with field of view of 90, 518.8579 WITH SSC with field of view of 50.967800
+    focal_length: 320.0
     resolution_x: 640
     resolution_y: 480
     downsampling_factor: 3.0
@@ -120,12 +76,11 @@ trajectory_evaluator:
 
   # How to compute the values
   value_computer:
-    # type: "AccumulateValue"
-    # following_value_computer:
-    #   type: "LinearValue"
-    #   cost_weight: 1.0
-    #   gain_weight: 0.1
-    type: "GlobalNormalizedGain"
+    type: "AccumulateValue"
+    following_value_computer:
+      type: "LinearValue"
+      cost_weight: 1.0
+      gain_weight: 0.1
 
   # Execution policy for available segments
   next_selector:
@@ -141,7 +96,7 @@ trajectory_evaluator:
 # Specify a backtracker if the planner gets stuck
 back_tracker:
   type: "RotateReverse"
-  turn_rate: 0.8 # originally 0.8
+  turn_rate: 1.6
   update_rate: 2.0
   sampling_rate: 20.0
   n_rotations: 1

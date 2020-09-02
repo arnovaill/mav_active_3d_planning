@@ -29,14 +29,20 @@ namespace active_3d_planning {
     bool TrajectoryGenerator::checkTraversable(const Eigen::Vector3d &position) {
         // check bounding volume
         if (!bounding_volume_->contains(position)) {
+            // std::cout << "NOT TRAVERSABLE" << std::endl;
             return false;
         }
         //
         if (planner_.getMap().isObserved(position)) {
+            // if (planner_.getMap().isTraversable(position)){
+            //     std::cout << "TRAVERSABLE" << std::endl;
+            // }
+
             return planner_.getMap().isTraversable(position);
         }
         if (p_clearing_radius_ > 0.0) {
             if ((planner_.getCurrentPosition() - position).norm() < p_clearing_radius_) {
+                // std::cout << "TRAVERSABLE2" << std::endl;
                 return true;
             }
         }
