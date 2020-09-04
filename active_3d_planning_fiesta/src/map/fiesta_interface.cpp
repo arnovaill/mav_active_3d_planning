@@ -1,7 +1,6 @@
 #include "active_3d_planning_fiesta/map/fiesta_interface.h"
 #include "active_3d_planning_core/data/system_constraints.h"
 
-// #include <voxblox_ros/ros_params.h>
 
 namespace active_3d_planning {
     namespace map {
@@ -20,7 +19,7 @@ namespace active_3d_planning {
         bool FiestaMap::isTraversable(const Eigen::Vector3d &position, const Eigen::Quaterniond &orientation) {
             if (isObserved(position)){
                 double distance = fiesta_server_->esdf_map_->GetDistance(position);
-                if (distance > 9999){ // TODO remove magic number
+                if (distance == fiesta_server_->esdf_map_->infinity_){ 
                     return false;
                 }
                 
@@ -31,7 +30,7 @@ namespace active_3d_planning {
             }
         }
 
-        bool FiestaMap::isObserved(const Eigen::Vector3d &point) { // DOES NOT SEEM TO WORK  
+        bool FiestaMap::isObserved(const Eigen::Vector3d &point) { 
             Eigen::Vector3i vox;
             // Get voxel corresponding to point
             fiesta_server_->esdf_map_->Pos2Vox(point,vox);
@@ -40,11 +39,10 @@ namespace active_3d_planning {
                 return false;
             else
                 return true;
-            //return fiesta_server_->esdf_map_->PosInMap(point);
         }
 
         // get occupancy
-        unsigned char FiestaMap::getVoxelState(const Eigen::Vector3d &point) { // DOES NOT SEEM TO WORK 
+        unsigned char FiestaMap::getVoxelState(const Eigen::Vector3d &point) { 
             // Fiesta and the planner have different definitions of occupied voxels 
             int occupancy = fiesta_server_->esdf_map_->GetOccupancy(point); // this returns only true or false, need to check distance buffer to know if unknown 
             Eigen::Vector3i vox;
@@ -54,18 +52,15 @@ namespace active_3d_planning {
             // Only way to check for unseen voxel is through the distance buffer of the ESDF 
             double distance = fiesta_server_->esdf_map_->distance_buffer_[id];
 
-            if (distance == -10000){ // CHECK HEREEEE
-                // ROS_WARN("UNKNOWN: %d", occupancy);
+            if (distance == fiesta_server_->esdf_map_->undefined_){ 
                 return FiestaMap::UNKNOWN; // 2
             } 
 
             else if (occupancy == 1){
-                // ROS_WARN("OCCUPIED: %d", occupancy);
                 return FiestaMap::OCCUPIED; // 0
             } 
 
             else if (occupancy == 0){
-                // ROS_WARN("FREE: %d", occupancy);
                 return FiestaMap::FREE; // 1
             } 
 
@@ -77,20 +72,16 @@ namespace active_3d_planning {
 
         // get voxel size
         double FiestaMap::getVoxelSize() {
-            // ROS_WARN("GETVOXELSIZE: %3.3f", fiesta_server_->parameters_.resolution_);
             return fiesta_server_->parameters_.resolution_;
         }
 
         // get the center of a voxel from input point
         bool FiestaMap::getVoxelCenter(Eigen::Vector3d *center, const Eigen::Vector3d &point) {
             Eigen::Vector3i vox;
-            
             // Get voxel corresponding to point
             fiesta_server_->esdf_map_->Pos2Vox(point,vox);
             // Get center of corresponding voxel
             fiesta_server_->esdf_map_->Vox2Pos(vox,*center);
-            // ROS_WARN("POINT: %3.3f %3.3f %3.3f", point.x(), point.y(), point.z());
-            // ROS_WARN("CENTER: %3.3f %3.3f %3.3f", center->x(), center->y(), center->z());
             return true;
 
         }
