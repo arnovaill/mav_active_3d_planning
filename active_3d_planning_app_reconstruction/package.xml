@@ -16,10 +16,6 @@
     <depend>active_3d_planning_core</depend>
     <depend>active_3d_planning_ros</depend>
     <depend>active_3d_planning_mav</depend>
-    <!-- REMOVED -->
-    <!-- <depend>active_3d_planning_voxblox</depend> -->
-    <!-- <depend>voxblox_ros</depend> -->
-    <!-- <depend>voxblox</depend> -->
     <depend>roscpp</depend>
     <depend>rospy</depend>
     <depend>trajectory_msgs</depend>
@@ -28,7 +24,6 @@
     <depend>sensor_msgs</depend>
     <depend>geometry_msgs</depend>
     <depend>nav_msgs</depend>
-    <!--ADDED -->
     <depend>active_3d_planning_fiesta</depend>
     <depend>fiesta</depend>
     
